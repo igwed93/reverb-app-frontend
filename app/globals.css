@@ -1,26 +1,67 @@
 @import "tailwindcss";
 
+/* |--------------------------------------------------------------------------
+| Reverb Color Variables (CSS Custom Properties)
+|--------------------------------------------------------------------------
+| These are the variables Tailwind will read, and they will be swapped by the
+| :root.dark selector when dark mode is active.
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* LIGHT MODE BASE COLORS */
+  --color-reverb-teal: #00A389; 
+  --color-acoustic-blue: #3498DB;
+  --color-echo-white: #F9F9F9;
+  --color-off-white-surface: #FFFFFF; 
+  --color-deep-slate: #1C1C1C; 
+  --color-soft-grey: #888888; 
+
+  /* Tailwind CSS defaults (adapted to our theme) */
+  --background: var(--color-echo-white);
+  --foreground: var(--color-deep-slate);
 }
+
+/* DARK MODE CLASS OVERRIDES */
+:root.dark { 
+    --color-reverb-teal: #14C2A3; /* Dark Mode Primary */
+    --color-acoustic-blue: #5BBAF7; /* Dark Mode Secondary */
+    --color-echo-white: #121212; /* Dark Mode Background */
+    --color-off-white-surface: #1e1e1e; /* Dark Mode Surface */
+    --color-deep-slate: #EAEAEA; /* Dark Mode Text */
+    --color-soft-grey: #A0A0A0; /* Dark Mode Secondary Text */
+    
+    --background: var(--color-echo-white);
+    --foreground: var(--color-deep-slate);
+}
+
+/* |--------------------------------------------------------------------------
+| Tailwind CSS Theme Configuration
+|--------------------------------------------------------------------------
+| This block maps our CSS variables to Tailwind utility classes.
+*/
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    /* Map Tailwind defaults */
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    
+    /* Map all custom colors */
+    --color-reverb-teal: var(--color-reverb-teal);
+    --color-acoustic-blue: var(--color-acoustic-blue);
+    --color-echo-white: var(--color-echo-white);
+    --color-off-white-surface: var(--color-off-white-surface);
+    --color-deep-slate: var(--color-deep-slate);
+    --color-soft-grey: var(--color-soft-grey);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* |--------------------------------------------------------------------------
+| Global Body Styles
+|--------------------------------------------------------------------------
+*/
 body {
-  background: var(--background);
+  /* Use the variables which flip based on the :root.dark class */
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Recommended modern, clean font */
+  font-family: Inter, Roboto, system-ui, sans-serif; 
 }
