@@ -19,7 +19,7 @@ type SocketInstance = ReturnType<typeof import('socket.io-client').default>;
 
 
 const ChatWindow: React.FC = () => {
-    const { token, user, setToken } = useAuth(); // setToken is unused but good practice
+    const { token, user } = useAuth();
     const { selectedChat, setChats } = useChat();
     const { socket } = useSocket();
     const [messages, setMessages] = useState<IMessage[]>([]);

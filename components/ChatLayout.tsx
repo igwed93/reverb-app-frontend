@@ -1,74 +1,76 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
-import { Home, Users, Settings, LogOut, MessageSquare, User, Camera } from 'lucide-react';
+import { Settings, LogOut, MessageSquare, Camera } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { usePathname } from 'next/navigation';
 import ChatList from './ChatList';
 import ChatWindow from './ChatWindow';
+import ContactSearchList from './ContactSearchList';
 import { useSocket } from '@/context/SocketContext';
 import { useChat } from '@/context/ChatContext';
 import ThemeToggle from './ThemeToggle';
-import AvatarWithInitials from './AvatarWithInitials'; // Assuming this component is created
-import UserProfileSidebar from './UserProfileSidebar'; // Assuming this component is created
+import AvatarWithInitials from './AvatarWithInitials';
+import UserProfileSidebar from './UserProfileSidebar';
+import MobileUtilitySidebar from './MobileUtilitySidebar';
 import axios from 'axios';
+import SidebarNav from './SidebarNav';
 
 const ChatLayout: React.FC = () => {
     const { user, logout } = useAuth();
     const { setChats, selectedChat, isChatListVisible, setIsChatListVisible, chats } = useChat();
+    const currentPath = usePathname();
     const { socket } = useSocket();
 
-    const [showProfileModal, setShowProfileModal] = useState(false); 
+    const [showProfileModal, setShowProfileModal] = useState(false);
     const profileFileInputRef = useRef<HTMLInputElement>(null);
 
-    // ChatList visibility
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    // new states
+    //const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    //const [isProfileSidebarOpen, setIsProfileSidebarOpen] = useState(false);
+
     const listVisibilityClass = `
-    ${isChatListVisible ? 'block' : 'hidden'}
-    md:block
-    md:w-[30%]
-    lg:w-[35%]
-    h-full
-    md:relative
-    absolute inset-y-0 left-0 z-20 w-full bg-white
+        ${isChatListVisible ? 'block' : 'hidden'}
+        md:block
+        md:w-[30%]
+        lg:w-[35%]
+        h-full
+        md:relative
+        absolute inset-y-0 left-0 z-50 w-full
+        bg-echo-white dark:bg-deep-slate
     `;
 
-    // ChatWindow visibility
     const windowVisibilityClass = `
-    ${(!isChatListVisible && selectedChat) ? 'block' : 'hidden'}
-    md:block
-    md:flex-1
-    h-full
+        ${(!isChatListVisible && selectedChat) ? 'block' : 'hidden'}
+        md:block
+        md:flex-1
+        h-full
     `;
 
+    useEffect(() => {
+        if (typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
+            Notification.requestPermission();
+        }
+    }, []);
 
-    // --- Global Message Receiver for Chat List Updates ---
     useEffect(() => {
         if (!socket || !user) return;
 
         const globalMessageReceiver = (newMessageReceived: any) => {
-            // Request Notification Permission (Issue 7 fix)
-            if (typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
-                 Notification.requestPermission();
-            }
-            
-            // Notification Logic (Issue 7 fix)
-            if (selectedChat?._id !== newMessageReceived.chatId && Notification.permission === 'granted') {
-                 // Logic to determine chat name and send notification...
-                 const incomingChat = chats.find(c => c._id === newMessageReceived.chatId);
-                 const title = incomingChat?.name || 'New Reverb Message';
-                 new Notification(title, { body: newMessageReceived.content, icon: '/reverb-logo-small.png' });
-            }
-            
-            // If the message is for the currently selected chat, skip.
-            if (selectedChat?._id === newMessageReceived.chatId) {
-                return; 
+            if (selectedChat?._id === newMessageReceived.chatId) return;
+
+            if (selectedChat?._id !== newMessageReceived.chatId && typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+                const incomingChat = chats.find(c => c._id === newMessageReceived.chatId);
+                const title = incomingChat?.name || 'New Reverb Message';
+                new Notification(title, { body: newMessageReceived.content, icon: '/reverb-logo-small.png' });
             }
 
-            // Logic for messages arriving for inactive chats (Unread Count Sync)
             setChats(prevChats => {
                 return prevChats.map(chat => {
                     if (chat._id === newMessageReceived.chatId) {
                         const currentCount = (chat.unreadCounts as Record<string, number>)[user._id] || 0;
-
                         const newUnreadCounts = new Map(Object.entries(chat.unreadCounts as Record<string, number>));
                         newUnreadCounts.set(user._id, currentCount + 1);
 
@@ -84,79 +86,88 @@ const ChatLayout: React.FC = () => {
         };
 
         socket.on('message received', globalMessageReceiver);
-        
         return () => {
             socket.off('message received', globalMessageReceiver);
         };
-    }, [socket, selectedChat, setChats, user, chats]); 
+    }, [socket, selectedChat, setChats, user, chats]);
 
-    // REQUEST NOTIFICATION PERMISSION
+    //--- Reset visibility when navigating to main tabs ---
     useEffect(() => {
-        if (typeof Notification !== 'undefined' && Notification.permission !== 'granted') {
-            Notification.requestPermission();
+        // Check if the current path is the base (e.g., /app, /app/messages, or /app/contacts)
+        // If we are on one of the main list views, the list should be visible by default.
+        if (currentPath === '/app' || currentPath.startsWith('/app/messages') || currentPath.startsWith('/app/contacts')) {
+            setIsChatListVisible(true);
         }
-    }, []); 
+    }, [currentPath, setIsChatListVisible]);
 
-    // File Upload Handler (for Avatar Update)
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        // --- PHASE 1: Upload (Placeholder) ---
-        alert(`Uploading ${file.name}. This is a placeholder for file storage (S3/Cloudinary).`);
-        const mockNewAvatarUrl = 'https://picsum.photos/60/60?' + Date.now(); // Mock URL
+        alert(`Uploading ${file.name}. Placeholder for file storage.`);
+        const mockNewAvatarUrl = 'https://picsum.photos/60/60?' + Date.now();
 
-        // --- PHASE 2: Update Database and Context ---
         try {
-            const config = { 
-                headers: { 
-                    Authorization: `Bearer ${localStorage.getItem('reverbToken')}`, 
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('reverbToken')}`,
                     'Content-Type': 'application/json',
-                } 
+                }
             };
-            
             await axios.put(`http://localhost:5000/api/users/avatar`, { avatarUrl: mockNewAvatarUrl }, config);
-            alert("Avatar updated! Restart app to see changes."); 
-
+            alert("Avatar updated! Restart app to see changes.");
         } catch (error) {
             console.error("Avatar upload failed:", error);
             alert("Failed to update avatar. Check console.");
         }
     };
 
-    const handleAvatarClick = () => { profileFileInputRef.current?.click(); };
+    const handleAvatarClick = () => profileFileInputRef.current?.click();
 
+    const renderMiddleColumnContent = () => {
+        if (currentPath.startsWith('/app/contacts')) {
+            return <ContactSearchList onMenuClick={() => setIsSidebarOpen(true)} />;
+        }
+        return <ChatList
+            setIsMobileOpen={setIsChatListVisible}
+            setShowProfileModal={setShowProfileModal}
+            onOpenUtilitySidebar={() => setIsSidebarOpen(true)}
+        />;
+    };
 
     return (
-        <div className='flex h-screen overflow-hidden bg-echo-white dark:bg-echo-white text-deep-slate dark:text-deep-slate'>
-            
-            {/* Left Column: Navigation - Remains hidden on mobile */}
-            <aside className='hidden lg:flex flex-col w-[10%] min-w-[80px] max-w-[120px] bg-deep-slate dark:bg-off-white-surface text-white dark:text-deep-slate p-4'>
-                <div className='flex-grow flex flex-col items-center space-y-8 mt-4'>
-                    <div className="w-10 h-10">
-                        {/* Final Logo */}
-                        <img src="/reverb-logo-small.png" alt="Reverb Logo" className="w-full h-full object-contain rounded" />
+        <div className="flex h-screen overflow-hidden bg-echo-white dark:bg-deep-slate text-deep-slate dark:text-echo-white">
+
+            {/* LEFT SIDEBAR */}
+            <aside className="hidden lg:flex flex-col w-[15%] min-w-[150px] max-w-[200px] 
+                bg-deep-slate dark:bg-off-white-surface 
+                text-white dark:text-deep-slate 
+                p-4 border-r border-gray-200 dark:border-gray-700">
+                
+                <div className="flex-grow flex flex-col items-center space-y-8 mt-4">
+                    {/* Branding */}
+                    <div className="flex items-center space-x-2 p-2 mb-6">
+                        <img src="/reverb-logo-small.png" alt="Reverb Logo" className="w-8 h-8 object-contain" />
+                        <span className="text-xl font-bold text-echo-white dark:text-deep-slate">Reverb</span>
                     </div>
 
-                    <nav className='flex flex-col space-y-8'>
-                        <Home className="w-6 h-6 p-1 rounded hover:bg-white/10 dark:hover:bg-deep-slate/10 transition cursor-pointer text-acoustic-blue" />
-                        <MessageSquare className="w-6 h-6 p-1 rounded hover:bg-white/10 dark:hover:bg-deep-slate/10 transition cursor-pointer bg-acoustic-blue text-white" />
-                        <Users className="w-6 h-6 p-1 rounded hover:bg-white/10 dark:hover:bg-deep-slate/10 transition cursor-pointer" />
-                    </nav>
+                    <SidebarNav />
                 </div>
 
-                <div className='flex flex-col items-center space-y-4'>
-                    <ThemeToggle />
+                {/* Utilities */}
+                <div className="mt-auto flex flex-col items-center space-y-4">
                     <Settings 
-                        onClick={() => setShowProfileModal(true)} 
-                        className="w-6 h-6 p-1 rounded hover:bg-white/10 dark:hover:bg-deep-slate/10 transition cursor-pointer" 
+                        onClick={() => setShowProfileModal(true)}
+                        className="w-6 h-6 p-1 stroke-deep-slate dark:stroke-deep-slate rounded hover:bg-white/10 dark:hover:bg-deep-slate/10 transition cursor-pointer"
+                        style={{ stroke: 'currentColor' }}
                     />
 
-                    <button onClick={logout} className='p-1 rounded hover:bg-white/10 dark:hover:bg-deep-slate/10 transition'>
-                        <LogOut className='w-6 h-6 text-soft-grey' />
+                    <ThemeToggle />
+
+                    <button onClick={logout} className="p-1 rounded hover:bg-white/10 dark:hover:bg-deep-slate/10 transition">
+                        <LogOut className="w-6 h-6 text-soft-grey" />
                     </button>
-                    
-                    {/* Hidden File Input for Avatar Upload */}
+
                     <input 
                         type="file" 
                         ref={profileFileInputRef} 
@@ -165,12 +176,11 @@ const ChatLayout: React.FC = () => {
                         style={{ display: 'none' }} 
                     />
 
-                    {/* AVATAR AREA: Button to open the profile sidebar */}
+                    {/* Avatar */}
                     <div 
                         onClick={() => setShowProfileModal(true)} 
                         className="w-8 h-8 rounded-full overflow-hidden bg-gray-600 border-2 border-reverb-teal relative cursor-pointer"
                     >
-                        {/* Avatar content */}
                         {user?.avatarUrl ? (
                             <img src={user.avatarUrl} alt={user.username} className="w-full h-full object-cover"/>
                         ) : (
@@ -183,27 +193,26 @@ const ChatLayout: React.FC = () => {
                 </div>
             </aside>
 
-            {/* Middle Column: Conversations List (The mobile overlay) */}
-            <section className={`${listVisibilityClass} border-r border-gray-200 dark:border-gray-700 bg-off-white-surface dark:bg-off-white-surface`}>
-                <ChatList setIsMobileOpen={setIsChatListVisible} />
+            {/* CHAT LIST SECTION */}
+            <section className={`${listVisibilityClass} border-r border-gray-200 dark:border-gray-700`}>
+                {renderMiddleColumnContent()}
             </section>
 
-
-            {/* Right Column: Chat Window (Adaptive visibility) */}
-            <main className={`flex-grow bg-echo-white dark:bg-echo-white ${windowVisibilityClass}`}>
+            {/* CHAT WINDOW */}
+            <main className={`flex-grow ${windowVisibilityClass} bg-echo-white dark:bg-deep-slate`}>
                 {selectedChat ? (
                     <ChatWindow />
                 ) : (
                     <div className="h-full flex items-center justify-center">
                         <div className="text-center text-soft-grey">
                             <MessageSquare className="w-10 h-10 mx-auto mb-3 text-reverb-teal" />
-                             <p className='text-xl text-deep-slate'>Welcome to Reverb.</p>
-                            <p className="text-lg text-deep-slate">Select a conversation to start chatting.</p>
+                            <p className="text-xl text-deep-slate dark:text-echo-white">Welcome to Reverb.</p>
+                            <p className="text-lg text-deep-slate dark:text-soft-grey">Select a conversation to start chatting.</p>
                         </div>
                     </div>
                 )}
             </main>
-            
+
             {/* USER PROFILE SIDEBAR */}
             {showProfileModal && (
                 <UserProfileSidebar 
@@ -212,9 +221,22 @@ const ChatLayout: React.FC = () => {
                     onAvatarChange={handleAvatarClick} 
                 />
             )}
+
+            {/* MOBILE UTILITY SIDEBAR */}
+            {isSidebarOpen && (
+            <div className="fixed inset-0 z-[9999] bg-black/50">
+                <MobileUtilitySidebar
+                onOpenProfile={() => {
+                    setShowProfileModal(true);   // opens your profile sidebar
+                    setIsSidebarOpen(false);     // closes the mobile menu immediately
+                }}
+                onClose={() => setIsSidebarOpen(false)}
+                />
+            </div>
+            )}
+
         </div>
     );
 };
-
 
 export default ChatLayout;

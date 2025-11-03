@@ -15,6 +15,9 @@ interface UserProfileSidebarProps {
 
 const UserProfileSidebar: React.FC<UserProfileSidebarProps> = ({ user, onClose, onAvatarChange }) => {
     const { logout } = useAuth();
+
+    // If the user object is present, we display their current status.
+    const statusDisplay = user?.status || 'Offline';
     
     return (
         // Fixed position sidebar that slides in from the right
@@ -54,6 +57,9 @@ const UserProfileSidebar: React.FC<UserProfileSidebarProps> = ({ user, onClose, 
                 </div>
                 <p className="text-xl font-semibold text-deep-slate dark:text-white">{user?.username}</p>
                 <p className="text-sm text-soft-grey">{user?.email}</p>
+                <p className={`text-xs mt-1 font-medium ${statusDisplay === 'Online' ? 'text-reverb-teal' : 'text-soft-grey'}`}>
+                    {statusDisplay}
+                </p>
             </div>
 
             {/* Account Management Actions */}
