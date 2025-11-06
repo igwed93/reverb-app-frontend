@@ -4,8 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 
-// NOTE: We do not use useAuth here directly to avoid race conditions. 
-// We use a standalone fetch and rely on AuthProvider's useEffect to pick up the token.
+// used a standalone fetch and rely on AuthProvider's useEffect to pick up the token.
 
 const fetchUserProfile = async (token: string) => {
     const config = { 
