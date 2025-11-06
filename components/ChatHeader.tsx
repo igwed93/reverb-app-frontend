@@ -75,7 +75,7 @@ const ChatHeader = ({ chat, currentUserId, isTyping, onInfoClick }: ChatHeaderPr
                             />
                         ) : (
                             // If no avatar URL, use Initials Component
-                            <AvatarWithInitials name={chatName} size="12" /> 
+                            <AvatarWithInitials name={chatName ?? 'User'} size="12" />
                         )}
                     </div>
                     {isOnlineRealTime && (

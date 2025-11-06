@@ -57,7 +57,7 @@ const ChatListItem: React.FC<ChatListItemProps> = ({ chat, currentUserId, isSele
                             className="w-full h-full rounded-full object-cover"
                         />
                     ) : (
-                        <AvatarWithInitials name={chatName} size="12" />
+                        <AvatarWithInitials name={chatName ?? 'User'} size="12" />
                     )}
                 </div>
 

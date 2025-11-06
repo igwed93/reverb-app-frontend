@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
 import { Send, Smile, Paperclip, Mic } from 'lucide-react';
-import EmojiPicker, { EmojiClickData } from 'emoji-picker-react';
+import EmojiPicker, { EmojiClickData, Theme as EmojiTheme } from 'emoji-picker-react';
 import { useTheme } from "next-themes";
 import { IMessage } from '@/types/messages';
 import io from 'socket.io-client';
@@ -181,7 +181,7 @@ const MessageInput = ({ selectedChatId, setMessages, socket }: MessageInputProps
                     <div className='absolute bottom-full left-0 mb-2 z-50 shadow-xl rounded-lg overflow-hidden'>
                         <EmojiPicker 
                             onEmojiClick={onEmojiClick}
-                            theme={theme === "dark" ? "dark" : "light"}
+                            theme={theme === "dark" ? EmojiTheme.DARK : EmojiTheme.LIGHT}
                             width="300px"
                             height="400px"
                             previewConfig={{ showPreview: false }}

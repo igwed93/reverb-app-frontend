@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { IUser } from './AuthContext';
+import { IUser } from '@/types/models';
 
 // --- Type Definitions ---
 export interface IParticipant extends Omit<IUser, 'password'> {}
