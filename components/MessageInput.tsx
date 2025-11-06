@@ -9,7 +9,7 @@ import { useTheme } from "next-themes";
 import { IMessage } from '@/types/messages';
 import io from 'socket.io-client';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://reverb-chat-app-backend.onrender.com/api';
 
 type SocketInstance = ReturnType<typeof io>;
 type Theme = "light" | "dark" | "auto";

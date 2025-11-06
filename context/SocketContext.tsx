@@ -8,7 +8,7 @@ import { useAuth } from './AuthContext';
 type SocketInstance = ReturnType<typeof io>;
 
 // --- Constants ---
-const SOCKET_ENDPOINT = 'http://localhost:5000'; // Matches our Express server URL
+const SOCKET_ENDPOINT = 'https://reverb-chat-app-backend.onrender.com'; // Matches our Express server URL
 
 // --- Type Definitions
 interface SocketContextType {

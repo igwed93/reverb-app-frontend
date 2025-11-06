@@ -59,14 +59,14 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ children, isLogin }) => {
           
           <div className="flex justify-center space-x-4">
             {/* Google Login - Links to Express Backend */}
-            <Link href="http://localhost:5000/api/auth/google" 
+            <Link href="https://reverb-chat-app-backend.onrender.com/api/auth/google" 
                className="p-3 border border-gray-300 dark:border-gray-600 rounded-full hover:bg-gray-50 dark:hover:bg-deep-slate/20 transition"
             >
               {/* Image must be in /public */}
               <img src="/google.svg" alt="Google" className="w-5 h-5" />
             </Link>
             {/* GitHub Login - Links to Express Backend */}
-            <Link href="http://localhost:5000/api/auth/github" 
+            <Link href="https://reverb-chat-app-backend.onrender.com/api/auth/github" 
                className="p-3 border border-gray-300 dark:border-gray-600 rounded-full hover:bg-gray-50 dark:hover:bg-deep-slate/20 transition"
             >
               <img src="/github.svg" alt="GitHub" className="w-5 h-5" />

@@ -23,8 +23,8 @@ interface AuthContextType {
 }
 
 // --- Constants ---
-const API_URL = 'http://localhost:5000/api/auth';
-const API_USERS_URL = 'http://localhost:5000/api/users';
+const API_URL = 'https://reverb-chat-app-backend.onrender.com/api/auth';
+const API_USERS_URL = 'https://reverb-chat-app-backend.onrender.com/api/users';
 
 
 // --- Context and Hook Initialization ---
