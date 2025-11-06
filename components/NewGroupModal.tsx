@@ -7,7 +7,6 @@ import { useAuth } from '@/context/AuthContext';
 import { IChat, useChat } from '@/context/ChatContext';
 import AvatarWithInitials from './AvatarWithInitials';
 
-const API_BASE_URL = 'http://localhost:5000/api';
 
 interface NewGroupModalProps {
     isOpen: boolean;
@@ -47,7 +46,7 @@ const NewGroupModal: React.FC<NewGroupModalProps> = ({ isOpen, onClose }) => {
             
             // GET /api/users?search=<searchTerm>
             const { data } = await axios.get(
-                `${API_BASE_URL}/users?search=${searchTerm}`,
+                `${process.env.API_BASE_URL}/api/users?search=${searchTerm}`,
                 config
             );
             // Filter out already selected users and the current user
@@ -96,7 +95,7 @@ const NewGroupModal: React.FC<NewGroupModalProps> = ({ isOpen, onClose }) => {
 
             // POST /api/chats/group (Calls the dedicated group endpoint)
             const { data } = await axios.post(
-                `${API_BASE_URL}/chats/group`,
+                `${process.env.API_BASE_URL}/api/chats/group`,
                 { name: groupName.trim(), users: userIds },
                 config
             );

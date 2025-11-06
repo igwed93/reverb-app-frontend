@@ -7,7 +7,6 @@ import { useAuth } from '@/context/AuthContext';
 import { IChat, useChat } from '@/context/ChatContext';
 import AvatarWithInitials from './AvatarWithInitials';
 
-const API_BASE_URL = 'http://localhost:5000/api';
 
 interface NewChatModalProps {
   isOpen: boolean;
@@ -38,7 +37,7 @@ const NewChatModal: React.FC<NewChatModalProps> = ({ isOpen, onClose }) => {
     try {
       setLoading(true);
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const { data } = await axios.get(`${API_BASE_URL}/users?search=${searchTerm}`, config);
+      const { data } = await axios.get(`${process.env.API_BASE_URL}/api/users?search=${searchTerm}`, config);
       setSearchResults(data);
     } catch (error) {
       console.error('User search failed:', error);
@@ -59,7 +58,7 @@ const NewChatModal: React.FC<NewChatModalProps> = ({ isOpen, onClose }) => {
         },
       };
 
-      const { data } = await axios.post(`${API_BASE_URL}/chats`, { userId }, config);
+      const { data } = await axios.post(`${process.env.API_BASE_URL}/api/chats`, { userId }, config);
       const newChat = data as IChat;
 
       setChats((prevChats) => {

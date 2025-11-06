@@ -12,7 +12,6 @@ import { IMessage } from '@/types/messages';
 import SharedMediaSidebar from './SharedMediaSidebar';
 import { MessageSquare } from 'lucide-react';
 
-const API_BASE_URL = 'http://localhost:5000/api';
 
 // Define SocketInstance type locally for safety
 type SocketInstance = ReturnType<typeof import('socket.io-client').default>;
@@ -37,7 +36,7 @@ const ChatWindow: React.FC = () => {
             const config = { headers: { Authorization: `Bearer ${token}` } };
             
             // 1. Fetch messages
-            const { data } = await axios.get(`${API_BASE_URL}/messages/${chat._id}`, config);
+            const { data } = await axios.get(`${process.env.API_BASE_URL}/api/messages/${chat._id}`, config);
             setMessages(data);
 
             // 2. Mark messages as read
@@ -47,7 +46,7 @@ const ChatWindow: React.FC = () => {
                     Authorization: `Bearer ${token}` 
                 },
             };
-            await axios.put(`${API_BASE_URL}/messages/read`, { chatId: chat._id }, updateReadConfig);
+            await axios.put(`${process.env.API_BASE_URL}/api/messages/read`, { chatId: chat._id }, updateReadConfig);
             
             // 3. Manually update the ChatList context to clear the unread count (UI only)
             setChats(prevChats => 

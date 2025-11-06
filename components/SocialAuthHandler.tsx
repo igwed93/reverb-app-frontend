@@ -8,14 +8,13 @@ import axios from 'axios';
 // We use a standalone fetch and rely on AuthProvider's useEffect to pick up the token.
 
 const fetchUserProfile = async (token: string) => {
-    const API_URL = 'https://reverb-chat-app-backend.onrender.com/api/users/profile';
     const config = { 
         headers: { 
             Authorization: `Bearer ${token}` 
         },
         withCredentials: true 
     };
-    const res = await axios.get(API_URL, config);
+    const res = await axios.get(`${process.env.API_BASE_URL}/api/users/profile`, config);
     return res.data;
 };
 

@@ -114,7 +114,7 @@ const ChatLayout: React.FC = () => {
                     'Content-Type': 'application/json',
                 }
             };
-            await axios.put(`http://localhost:5000/api/users/avatar`, { avatarUrl: mockNewAvatarUrl }, config);
+            await axios.put(`${process.env.API_BASE_URL}/api/users/avatar`, { avatarUrl: mockNewAvatarUrl }, config);
             alert("Avatar updated! Restart app to see changes.");
         } catch (error) {
             console.error("Avatar upload failed:", error);

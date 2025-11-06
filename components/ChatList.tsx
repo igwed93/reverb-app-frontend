@@ -10,8 +10,6 @@ import NewChatModal from './NewChatModal';
 import NewGroupModal from './NewGroupModal';
 
 
-const API_BASE_URL = 'http://localhost:5000/api';
-
 interface ChatListProps {
     setIsMobileOpen: React.Dispatch<React.SetStateAction<boolean>>;
     setShowProfileModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,7 +39,7 @@ const ChatList: React.FC<ChatListProps> = ({ setIsMobileOpen, setShowProfileModa
                 },
             };
             
-            const { data } = await axios.get(`${API_BASE_URL}/chats`, config);
+            const { data } = await axios.get(`${process.env.API_BASE_URL}/api/chats`, config);
             setChats(data);
             setError('');
         } catch (err) {

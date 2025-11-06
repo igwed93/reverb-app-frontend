@@ -8,7 +8,6 @@ import { useChat } from '@/context/ChatContext';
 import AvatarWithInitials from './AvatarWithInitials';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
-const API_BASE_URL = 'http://localhost:5000/api';
 //const { setIsMobileSidebarOpen } = useUI();
 
 interface UserSearchResult {
@@ -34,7 +33,7 @@ const ContactSearchList: React.FC<ContactSearchListProps> = ({ onMenuClick }) =>
     if (!token) return;
     try {
       const config = { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
-      const { data } = await axios.get(`${API_BASE_URL}/users?search=`, config);
+      const { data } = await axios.get(`${process.env.API_BASE_URL}/api/users?search=`, config);
       setAllUsers(data);
     } catch (error) {
       console.error('Failed to fetch all users:', error);
@@ -51,7 +50,7 @@ const ContactSearchList: React.FC<ContactSearchListProps> = ({ onMenuClick }) =>
     if (!token) return;
     try {
       const config = { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
-      const { data } = await axios.post(`${API_BASE_URL}/chats`, { userId }, config);
+      const { data } = await axios.post(`${process.env.API_BASE_URL}/api/chats`, { userId }, config);
       const newChat = data as any;
       setChats((prevChats) => {
         if (!prevChats.some((c) => c._id === newChat._id)) return [newChat, ...prevChats];
