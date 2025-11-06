@@ -36,7 +36,7 @@ const ChatWindow: React.FC = () => {
             const config = { headers: { Authorization: `Bearer ${token}` } };
             
             // 1. Fetch messages
-            const { data } = await axios.get(`${process.env.API_BASE_URL}/api/messages/${chat._id}`, config);
+            const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/messages/${chat._id}`, config);
             setMessages(data);
 
             // 2. Mark messages as read
@@ -46,7 +46,7 @@ const ChatWindow: React.FC = () => {
                     Authorization: `Bearer ${token}` 
                 },
             };
-            await axios.put(`${process.env.API_BASE_URL}/api/messages/read`, { chatId: chat._id }, updateReadConfig);
+            await axios.put(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/messages/read`, { chatId: chat._id }, updateReadConfig);
             
             // 3. Manually update the ChatList context to clear the unread count (UI only)
             setChats(prevChats => 

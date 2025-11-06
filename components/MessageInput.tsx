@@ -9,7 +9,6 @@ import { useTheme } from "next-themes";
 import { IMessage } from '@/types/messages';
 import io from 'socket.io-client';
 
-const API_BASE_URL = 'https://reverb-chat-app-backend.onrender.com/api';
 
 type SocketInstance = ReturnType<typeof io>;
 type Theme = "light" | "dark" | "auto";
@@ -120,7 +119,7 @@ const MessageInput = ({ selectedChatId, setMessages, socket }: MessageInputProps
                 },
             };
 
-            const { data } = await axios.post(`${API_BASE_URL}/messages`, {
+            const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/messages`, {
                 chatId: selectedChatId,
                 content: contentToSend,
             }, config);

@@ -39,7 +39,7 @@ const ChatList: React.FC<ChatListProps> = ({ setIsMobileOpen, setShowProfileModa
                 },
             };
             
-            const { data } = await axios.get(`${process.env.API_BASE_URL}/api/chats`, config);
+            const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chats`, config);
             setChats(data);
             setError('');
         } catch (err) {

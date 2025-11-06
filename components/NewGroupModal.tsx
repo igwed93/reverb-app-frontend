@@ -46,7 +46,7 @@ const NewGroupModal: React.FC<NewGroupModalProps> = ({ isOpen, onClose }) => {
             
             // GET /api/users?search=<searchTerm>
             const { data } = await axios.get(
-                `${process.env.API_BASE_URL}/api/users?search=${searchTerm}`,
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users?search=${searchTerm}`,
                 config
             );
             // Filter out already selected users and the current user
@@ -95,7 +95,7 @@ const NewGroupModal: React.FC<NewGroupModalProps> = ({ isOpen, onClose }) => {
 
             // POST /api/chats/group (Calls the dedicated group endpoint)
             const { data } = await axios.post(
-                `${process.env.API_BASE_URL}/api/chats/group`,
+                `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chats/group`,
                 { name: groupName.trim(), users: userIds },
                 config
             );

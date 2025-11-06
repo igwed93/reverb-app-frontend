@@ -13,7 +13,7 @@ const fetchUserProfile = async (token: string) => {
         },
         withCredentials: true 
     };
-    const res = await axios.get(`${process.env.API_BASE_URL}/api/users/profile`, config);
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/profile`, config);
     return res.data;
 };
 

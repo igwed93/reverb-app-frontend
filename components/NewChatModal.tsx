@@ -37,7 +37,7 @@ const NewChatModal: React.FC<NewChatModalProps> = ({ isOpen, onClose }) => {
     try {
       setLoading(true);
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const { data } = await axios.get(`${process.env.API_BASE_URL}/api/users?search=${searchTerm}`, config);
+      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users?search=${searchTerm}`, config);
       setSearchResults(data);
     } catch (error) {
       console.error('User search failed:', error);
@@ -58,7 +58,7 @@ const NewChatModal: React.FC<NewChatModalProps> = ({ isOpen, onClose }) => {
         },
       };
 
-      const { data } = await axios.post(`${process.env.API_BASE_URL}/api/chats`, { userId }, config);
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chats`, { userId }, config);
       const newChat = data as IChat;
 
       setChats((prevChats) => {
