@@ -4,6 +4,8 @@ import React, { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
+
 // used a standalone fetch and rely on AuthProvider's useEffect to pick up the token.
 
 const fetchUserProfile = async (token: string) => {
@@ -13,7 +15,8 @@ const fetchUserProfile = async (token: string) => {
         },
         withCredentials: true 
     };
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/profile`, config);
+    const API_URL = `${BASE_URL}/api/users/profile`;
+    const res = await axios.get(`${API_URL}/api/users/profile`, config);
     return res.data;
 };
 
