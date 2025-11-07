@@ -16,7 +16,7 @@ const fetchUserProfile = async (token: string) => {
         withCredentials: true 
     };
     const API_URL = `${BASE_URL}/api/users/profile`;
-    const res = await axios.get(`${API_URL}/api/users/profile`, config);
+    const res = await axios.get(API_URL, config);
     return res.data;
 };
 
