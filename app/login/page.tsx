@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useForm } from 'react-hook-form'; // Assuming RHF is used here too
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import Link from 'next/link';
 
 // Zod schema for validation
 const loginSchema = z.object({
@@ -59,6 +60,13 @@ export default function LoginPage() {
           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-reverb-teal focus:border-reverb-teal transition bg-white text-deep-slate"
         />
         {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
+      </div>
+
+      {/* Forgot password */}
+      <div className="text-right">
+        <Link href="/forgot-password" className="text-reverb-teal text-sm hover:underline">
+            Forgot Password?
+        </Link>
       </div>
       
       {error && <p className="text-red-500 text-sm">{error}</p>}
