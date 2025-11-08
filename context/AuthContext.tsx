@@ -114,10 +114,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       },
   });
 
-  const register = async (username: string, email: string, password: string) => {
+  const register = async (username: string, email: string, password: string, confirmPassword: string) => {
     setIsLoading(true);
     try {
-      const res = await axios.post(`${API_URL}/register`, { username, email, password }, getConfig());
+      const res = await axios.post(`${API_URL}/register`, { username, email, password, confirmPassword }, getConfig());
       handleAuthSuccess(res);
     } catch (error: any) {
       const message = error.response?.data?.message || 'Registration failed.';

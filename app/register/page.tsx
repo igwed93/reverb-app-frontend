@@ -35,7 +35,7 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      await registerUser(data.username, data.email, data.password);
+      await registerUser(data.username, data.email, data.password, data.confirmPassword);
     } catch (error: any) {
       console.error("❌ Registration error:", error.message);
       setError(error.message || 'Registration failed.');
