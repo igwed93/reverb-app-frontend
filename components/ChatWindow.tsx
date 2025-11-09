@@ -171,15 +171,18 @@ const ChatWindow: React.FC = () => {
                 <div ref={messagesEndRef} />
             </div>
 
-            {/* 3. Input Area (Fixed) */}
-            <div className={`bg-off-white-surface dark:bg-off-white-surface border-t border-gray-200 dark:border-gray-700 p-4 sticky bottom-0 transition-all duration-300
-                ${showInfoSidebar ? 'mr-80' : ''}`}
+            {/* 3. Input Area (Responsive Bottom Bar) */}
+            <div
+            className={`mt-auto bg-off-white-surface dark:bg-off-white-surface
+                        border-t border-gray-200 dark:border-gray-700
+                        p-3 sm:p-4 transition-all duration-300
+                        ${showInfoSidebar ? 'mr-80' : ''}`}
             >
-                <MessageInput 
-                    selectedChatId={selectedChat._id} 
-                    setMessages={setMessages as React.Dispatch<React.SetStateAction<IMessage[]>>}
-                    socket={socket} 
-                />
+            <MessageInput
+                selectedChatId={selectedChat._id}
+                setMessages={setMessages as React.Dispatch<React.SetStateAction<IMessage[]>>}
+                socket={socket}
+            />
             </div>
             
             {/* 4. Info/Shared Media Sidebar */}

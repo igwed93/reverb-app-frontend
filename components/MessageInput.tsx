@@ -132,12 +132,10 @@ const MessageInput = ({ selectedChatId, setMessages, socket }: MessageInputProps
     <form
       onSubmit={handleSend}
       className="
-        flex items-center gap-2 sm:gap-3 w-full 
+        flex items-center gap-2 sm:gap-3 w-full
         px-3 sm:px-5 py-2 sm:py-3
         bg-off-white-surface dark:bg-deep-slate 
         border-t border-gray-200 dark:border-gray-700
-        fixed bottom-0 left-0 right-0
-        max-w-full
       "
     >
       {/* Hidden File Input */}
