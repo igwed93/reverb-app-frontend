@@ -134,8 +134,7 @@ const MessageInput = ({ selectedChatId, setMessages, socket }: MessageInputProps
       className="
         flex items-center gap-2 sm:gap-3 w-full
         px-3 sm:px-5 py-2 sm:py-3
-        bg-off-white-surface dark:bg-deep-slate 
-        border-t border-gray-200 dark:border-gray-700
+        bg-off-white-surface dark:bg-deep-slate
       "
     >
       {/* Hidden File Input */}

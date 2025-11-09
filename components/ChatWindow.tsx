@@ -175,7 +175,7 @@ const ChatWindow: React.FC = () => {
             <div
             className={`mt-auto bg-off-white-surface dark:bg-off-white-surface
                         border-t border-gray-200 dark:border-gray-700
-                        p-3 sm:p-4 transition-all duration-300
+                        px-3 py-1 sm:p-4 transition-all duration-300
                         ${showInfoSidebar ? 'mr-80' : ''}`}
             >
             <MessageInput
