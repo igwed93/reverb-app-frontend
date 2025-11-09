@@ -194,12 +194,12 @@ const ChatLayout: React.FC = () => {
             </aside>
 
             {/* CHAT LIST SECTION */}
-            <section className={`${listVisibilityClass} border-r border-gray-200 dark:border-gray-700`}>
+            <section className={`${listVisibilityClass} border-r border-gray-200 dark:border-gray-700 w-[35%]`}>
                 {renderMiddleColumnContent()}
             </section>
 
             {/* CHAT WINDOW */}
-            <main className={`flex-grow ${windowVisibilityClass} bg-echo-white dark:bg-deep-slate`}>
+            <main className={`flex-grow ${windowVisibilityClass} bg-echo-white dark:bg-deep-slate w-[50%]`}>
                 {selectedChat ? (
                     <ChatWindow />
                 ) : (
