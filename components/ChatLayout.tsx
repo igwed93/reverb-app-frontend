@@ -158,7 +158,7 @@ const ChatLayout: React.FC = () => {
                 <div className="mt-auto flex flex-col items-center space-y-4">
                     <Settings 
                         onClick={() => setShowProfileModal(true)}
-                        className="w-6 h-6 p-1 text-white dark:text-deep-slate bg-white dark:bg-deep-slate hover:bg-white/10 dark:hover:bg-deep-slate/20 transition cursor-pointer"
+                        className="w-6 h-6 p-1 text-deep-slate dark:text-deep-slate hover:bg-white/10 dark:hover:bg-deep-slate/20 transition cursor-pointer"
                         style={{ stroke: 'currentColor' }}
                     />
 
