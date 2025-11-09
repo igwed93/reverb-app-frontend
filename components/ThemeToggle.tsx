@@ -15,10 +15,10 @@ const ThemeToggle: React.FC = () => {
     >
       {theme === 'light' ? (
         // Sun icon (for switching to dark mode)
-        <Moon className="w-6 h-6 text-white/50" />
+        <Moon className="w-6 h-6 text-white/50 dark:text-deep-slate/90" />
       ) : (
         // Moon icon (for switching to light mode)
-        <Sun className="w-6 h-6 text-deep-slate" />
+        <Sun className="w-6 h-6 text-deep-slate/30 dark:text-deep-slate/90" />
       )}
     </button>
   );
