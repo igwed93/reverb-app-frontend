@@ -146,7 +146,7 @@ const MessageInput = ({ selectedChatId, setMessages, socket }: MessageInputProps
     };
 
     return (
-        <form onSubmit={handleSend} className='flex items-center space-x-3'>
+        <form onSubmit={handleSend} className='flex items-center space-x-3 w-full'>
             
             {/* Hidden File Input */}
             <input 
@@ -160,13 +160,13 @@ const MessageInput = ({ selectedChatId, setMessages, socket }: MessageInputProps
             <button 
                 type='button' 
                 onClick={handleDocumentClick} 
-                className='p-2 text-soft-grey hover:text-reverb-teal transition dark:text-soft-grey dark:hover:text-reverb-teal'
+                className='p-2 flex-shrink-0 text-soft-grey hover:text-reverb-teal transition dark:text-soft-grey dark:hover:text-reverb-teal'
             >
                 <Paperclip size={20} />
             </button>
 
             {/* Emoji Picker */}
-            <div className="relative" ref={emojiPickerRef}>
+            <div className="relative flex-shrink-0" ref={emojiPickerRef}>
                 <button 
                     type='button' 
                     onClick={() => setShowEmojiPicker(!showEmojiPicker)} 
@@ -209,7 +209,7 @@ const MessageInput = ({ selectedChatId, setMessages, socket }: MessageInputProps
                 type={inputContent.trim() ? 'submit' : 'button'} 
                 onClick={inputContent.trim() ? undefined : handleVoiceNoteToggle} 
                 disabled={isSending} 
-                className={`p-3 text-white rounded-full transition disabled:bg-soft-grey disabled:cursor-not-allowed ${
+                className={`p-3 flex-shrink-0 text-white rounded-full transition disabled:bg-soft-grey disabled:cursor-not-allowed ${
                     isRecording ? 'bg-red-500 animate-pulse' : 'bg-reverb-teal hover:bg-acoustic-blue dark:bg-reverb-teal dark:hover:bg-acoustic-blue'
                 }`}
             >

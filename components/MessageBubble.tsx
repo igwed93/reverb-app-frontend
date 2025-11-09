@@ -46,8 +46,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message, isOwnMessage, is
         </div>
       )}
 
-      <div className={`max-w-xs md:max-w-md lg:max-w-lg p-3 rounded-xl ${bubbleColor} shadow-sm`}>
-        <p className="text-sm break-words">{message.content}</p>
+      <div className={`max-w-[85%] sm:max-w-md md:max-w-md lg:max-w-lg p-3 rounded-xl ${bubbleColor} shadow-sm`}>
+        <p className="text-sm break-words break-all">{message.content}</p>
 
         <div className="flex justify-end items-center mt-1 space-x-1">
           <span
